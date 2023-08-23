@@ -89,12 +89,36 @@ impl Board {
             })
             .collect();
     }
+
+    pub fn set_cell(&mut self, x: usize, y: usize, new_cell: Cell) {
+        assert!(x < self.width());
+        assert!(y < self.height());
+
+        self.grid[y][x] = new_cell;
+    }
+
+    pub fn invert_cell(&mut self, x: usize, y: usize) {
+        assert!(x < self.width());
+        assert!(y < self.height());
+
+        self.grid[y][x].invert();
+    }
 }
 
 #[derive(Clone, Copy, PartialEq, Debug)]
 pub enum Cell {
     Black,
     White,
+}
+
+impl Cell {
+    pub fn invert(&mut self) {
+        use Cell::*;
+        *self = match *self {
+            Black => White,
+            White => Black,
+        };
+    }
 }
 
 #[cfg(test)]
@@ -154,5 +178,13 @@ mod game_of_life_tests {
 
         board.step();
         assert_eq!(board.grid, grid1);
+    }
+
+    #[test]
+    fn invert() {
+        let mut board = Board::empty(2, 1);
+        board.invert_cell(1, 0);
+
+        assert_eq!(board.grid, vec![vec![Cell::Black, Cell::White]]);
     }
 }
