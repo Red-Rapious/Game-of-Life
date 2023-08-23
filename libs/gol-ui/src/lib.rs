@@ -39,7 +39,7 @@ struct GOLSimulation {
 impl GOLSimulation {
     pub fn new(width: usize, height: usize, square_side: f32) -> Self {
         Self {
-            board: Board::random(width, height),
+            board: Board::empty(width, height),
             square_side,
             paused: false,
             mouse_position: Vec2::new(0.0, 0.0)
