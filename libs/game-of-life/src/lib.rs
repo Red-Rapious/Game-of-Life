@@ -1,12 +1,35 @@
+use rand::Rng;
+
 pub struct Board {
     grid: Vec<Vec<Cell>>,
 }
 
 impl Board {
-    pub fn new(width: usize, height: usize) -> Self {
+    pub fn empty(width: usize, height: usize) -> Self {
         assert!(width > 0 && height > 0);
 
         let grid = (0..height).map(|_| vec![Cell::Black; width]).collect();
+
+        Self { grid }
+    }
+
+    pub fn random(width: usize, height: usize) -> Self {
+        assert!(width > 0 && height > 0);
+
+        let mut rng = rand::thread_rng();
+        let grid = (0..height)
+            .map(|_| {
+                (0..width)
+                    .map(|_| {
+                        if rng.gen_bool(0.5) {
+                            Cell::White
+                        } else {
+                            Cell::Black
+                        }
+                    })
+                    .collect()
+            })
+            .collect();
 
         Self { grid }
     }
@@ -15,11 +38,11 @@ impl Board {
         &self.grid
     }
 
-    fn width(&self) -> usize {
+    pub fn width(&self) -> usize {
         self.grid[0].len()
     }
 
-    fn height(&self) -> usize {
+    pub fn height(&self) -> usize {
         self.grid.len()
     }
 
@@ -46,10 +69,10 @@ impl Board {
     }
 
     pub fn step(&mut self) {
-        self.grid = (0..self.width())
-            .map(|x| {
-                (0..self.height())
-                    .map(|y| match self.cell_white_neighbours(x, y) {
+        self.grid = (0..self.height())
+            .map(|y| {
+                (0..self.width())
+                    .map(|x| match self.cell_white_neighbours(x, y) {
                         3 => Cell::White,     // birth or stay alive
                         2 => self.grid[y][x], // stay dead or stay alive
                         _ => Cell::Black,     // no birth, or die of under/over-population
@@ -60,8 +83,22 @@ impl Board {
     }
 }
 
-#[derive(Clone, Copy, PartialEq)]
+#[derive(Clone, Copy, PartialEq, Debug)]
 pub enum Cell {
     Black,
     White,
+}
+
+#[cfg(test)]
+mod game_of_life_tests {
+    use super::*;
+
+    #[test]
+    fn same_dimensions() {
+        let mut board = Board::random(3, 2);
+        board.step();
+
+        assert_eq!(board.width(), 3);
+        assert_eq!(board.height(), 2);
+    }
 }

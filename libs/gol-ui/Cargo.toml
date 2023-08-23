@@ -7,3 +7,5 @@ edition = "2021"
 
 [dependencies]
 speedy2d = "*"
+rand = "*"
+lib-game-of-life = { path = "../game-of-life" }
