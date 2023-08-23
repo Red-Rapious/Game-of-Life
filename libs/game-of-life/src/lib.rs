@@ -5,6 +5,10 @@ pub struct Board {
 }
 
 impl Board {
+    pub fn from_grid(grid: Vec<Vec<Cell>>) -> Self {
+        Self { grid }
+    }
+
     pub fn empty(width: usize, height: usize) -> Self {
         assert!(width > 0 && height > 0);
 
@@ -53,7 +57,11 @@ impl Board {
         let mut white_neighbours = 0;
 
         for dx in -1..=1 {
-            for dy in [-1, 1] {
+            for dy in -1..=1 {
+                if dx == 0 && dy == 0 {
+                    continue;
+                }
+
                 if 0 <= x as i32 + dx
                     && x as i32 + dx < self.width() as i32
                     && 0 <= y as i32 + dy
@@ -100,5 +108,51 @@ mod game_of_life_tests {
 
         assert_eq!(board.width(), 3);
         assert_eq!(board.height(), 2);
+    }
+
+    #[test]
+    fn alternate_3_neighbours() {
+        use Cell::*;
+
+        let grid = vec![
+            vec![Black, Black, Black, Black, Black],
+            vec![Black, Black, White, Black, Black],
+            vec![Black, Black, White, Black, Black],
+            vec![Black, Black, White, Black, Black],
+            vec![Black, Black, Black, Black, Black],
+        ];
+
+        let board = Board::from_grid(grid);
+
+        assert_eq!(board.cell_white_neighbours(1, 2), 3);
+        assert_eq!(board.cell_white_neighbours(3, 2), 3);
+        assert_eq!(board.cell_white_neighbours(2, 2), 2);
+    }
+
+    #[test]
+    fn alternate_3_step() {
+        use Cell::*;
+
+        let grid1 = vec![
+            vec![Black, Black, Black, Black, Black],
+            vec![Black, Black, White, Black, Black],
+            vec![Black, Black, White, Black, Black],
+            vec![Black, Black, White, Black, Black],
+            vec![Black, Black, Black, Black, Black],
+        ];
+        let grid2 = vec![
+            vec![Black, Black, Black, Black, Black],
+            vec![Black, Black, Black, Black, Black],
+            vec![Black, White, White, White, Black],
+            vec![Black, Black, Black, Black, Black],
+            vec![Black, Black, Black, Black, Black],
+        ];
+
+        let mut board = Board::from_grid(grid1.clone());
+        board.step();
+        assert_eq!(board.grid, grid2);
+
+        board.step();
+        assert_eq!(board.grid, grid1);
     }
 }

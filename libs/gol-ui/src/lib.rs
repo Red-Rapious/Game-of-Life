@@ -10,7 +10,11 @@ use std::{thread, time};
 pub fn run() {
     let (width, height) = (240, 180);
     let square_side = 10.0;
-    let window = Window::new_centered("Game of Life", (width * square_side as u32, height * square_side as u32)).unwrap();
+    let window = Window::new_centered(
+        "Game of Life",
+        (width * square_side as u32, height * square_side as u32),
+    )
+    .unwrap();
     window.run_loop(MyWindowHandler::new(
         width as usize,
         height as usize,
@@ -48,10 +52,7 @@ impl WindowHandler for MyWindowHandler {
             for y in 0..self.board.height() {
                 graphics.draw_rectangle(
                     Rectangle::from_tuples(
-                        (
-                            x as f32 * self.square_side,
-                            y as f32 * self.square_side,
-                        ),
+                        (x as f32 * self.square_side, y as f32 * self.square_side),
                         (
                             (x as f32 + 1.0) * self.square_side,
                             (y as f32 + 1.0) * self.square_side,
