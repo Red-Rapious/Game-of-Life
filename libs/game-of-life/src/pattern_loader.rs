@@ -28,13 +28,18 @@ impl Pattern {
 
         for line in buffer.lines() {
             let line = line.unwrap();
+            if line.chars().take(1).collect::<Vec<char>>()[0] == '!' {
+                continue;
+            }
+
             grid.push(vec![]);
             let index = grid.len() - 1;
             for cell in line.chars() {
                 grid[index].push(match cell {
                     '.' => Cell::Black,
                     'O' => Cell::White,
-                    _ => panic!("Unsupported cell."),
+                    ' ' => { continue; },
+                    _ => panic!("Unsupported cell '{}'", cell),
                 });
             }
         }

@@ -1,3 +1,4 @@
+use pattern_loader::Pattern;
 use rand::Rng;
 
 pub mod pattern_loader;
@@ -104,6 +105,23 @@ impl Board {
         assert!(y < self.height());
 
         self.grid[y][x].invert();
+    }
+
+    pub fn insert_pattern(&mut self, pattern: &Pattern, x: usize, y: usize) {
+        assert!(
+            x + pattern.width() <= self.width(),
+            "Pattern's width is too large to be inserted at this position."
+        );
+        assert!(
+            y + pattern.height() <= self.height(),
+            "Patther's height is too large to be inserted at this position."
+        );
+
+        for dx in 0..pattern.width() {
+            for dy in 0..pattern.height() {
+                self.grid[y + dy][x + dx] = pattern.grid()[dy][dx];
+            }
+        }
     }
 }
 

@@ -1,3 +1,4 @@
+use lib_game_of_life::pattern_loader::Pattern;
 use speedy2d::color::Color;
 use speedy2d::dimen::Vec2;
 use speedy2d::shape::Rectangle;
@@ -10,7 +11,7 @@ use std::{thread, time};
 use lib_game_of_life::{Board, Cell};
 
 /// Minimum time between two frames of the simulation, in milliseconds
-const DELTA: u64 = 100;
+const DELTA: u64 = 40;
 
 pub fn run(width: u32, height: u32, square_side: f32) {
     assert_ne!(square_side, 0.0);
@@ -38,8 +39,14 @@ struct GOLSimulation {
 
 impl GOLSimulation {
     pub fn new(width: usize, height: usize, square_side: f32) -> Self {
+        let mut board = Board::empty(width, height);
+        board.insert_pattern(
+            &Pattern::load("libs/game-of-life/patterns/gosper_glider_gun.cells".to_string()),
+            10,
+            10,
+        );
         Self {
-            board: Board::empty(width, height),
+            board,
             square_side,
             paused: false,
             mouse_position: Vec2::new(0.0, 0.0),
@@ -64,7 +71,7 @@ impl WindowHandler for GOLSimulation {
         _info: speedy2d::window::WindowStartupInfo,
     ) {
         helper.set_resizable(false);
-        helper.set_cursor_visible(self.paused);
+        //helper.set_cursor_visible(self.paused);
     }
 
     fn on_draw(&mut self, helper: &mut WindowHelper, graphics: &mut Graphics2D) {
