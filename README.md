@@ -1,6 +1,6 @@
-# Game-of-Life-Computer
-A Game of Life simulation in Rust, and tools to build a working computer inside of it.
-
+# Game-of-Life
+<!--A Game of Life simulation in Rust, and tools to build a working computer inside of it.-->
+A Game of Life simulation in Rust.
 
 ## Patterns
 An [OCTA Metapixel](https://conwaylife.com/wiki/OTCA_metapixel):
