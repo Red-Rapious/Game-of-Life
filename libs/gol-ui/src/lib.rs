@@ -1,10 +1,10 @@
 use speedy2d::color::Color;
+use speedy2d::dimen::Vec2;
 use speedy2d::shape::Rectangle;
+use speedy2d::window::VirtualKeyCode;
 use speedy2d::window::{WindowHandler, WindowHelper};
 use speedy2d::Graphics2D;
 use speedy2d::Window;
-use speedy2d::window::VirtualKeyCode;
-use speedy2d::dimen::Vec2;
 use std::{thread, time};
 
 use lib_game_of_life::{Board, Cell};
@@ -33,7 +33,7 @@ struct GOLSimulation {
     board: Board,
     square_side: f32,
     paused: bool,
-    mouse_position: Vec2
+    mouse_position: Vec2,
 }
 
 impl GOLSimulation {
@@ -42,7 +42,7 @@ impl GOLSimulation {
             board: Board::empty(width, height),
             square_side,
             paused: false,
-            mouse_position: Vec2::new(0.0, 0.0)
+            mouse_position: Vec2::new(0.0, 0.0),
         }
     }
 
@@ -114,7 +114,11 @@ impl WindowHandler for GOLSimulation {
         }
     }
 
-    fn on_mouse_button_down(&mut self, helper: &mut WindowHelper<()>, _: speedy2d::window::MouseButton) {
+    fn on_mouse_button_down(
+        &mut self,
+        helper: &mut WindowHelper<()>,
+        _: speedy2d::window::MouseButton,
+    ) {
         if self.paused {
             let x = (self.mouse_position.x / self.square_side) as usize;
             let y = (self.mouse_position.y / self.square_side) as usize;

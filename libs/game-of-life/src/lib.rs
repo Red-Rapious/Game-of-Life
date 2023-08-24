@@ -1,5 +1,7 @@
 use rand::Rng;
 
+pub mod pattern_loader;
+
 pub struct Board {
     grid: Vec<Vec<Cell>>,
 }
