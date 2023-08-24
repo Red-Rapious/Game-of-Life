@@ -11,7 +11,7 @@ use std::{thread, time};
 use lib_game_of_life::{Board, Cell};
 
 /// Minimum time between two frames of the simulation, in milliseconds
-const DELTA: u64 = 40;
+const DELTA: u64 = 30;
 
 pub fn run(width: u32, height: u32, square_side: f32) {
     assert_ne!(square_side, 0.0);

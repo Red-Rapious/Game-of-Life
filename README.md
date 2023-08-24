@@ -1,7 +1,13 @@
 # Game-of-Life-Computer
 A Game of Life simulation in Rust, and tools to build a working computer inside of it.
 
-![Game of Life](assets/game-of-life.png)
+
+## Patterns
+An [OCTA Metapixel](https://conwaylife.com/wiki/OTCA_metapixel):
+![OCTA Metapixel](assets/OCTA-metapixel.png)
+
+A [Gosper Glider Gun](https://conwaylife.com/wiki/Gosper_glider_gun):
+![Gosper Glider Gun](assets/gosper-glider-gun.png)
 
 ## Running
 Launch the UI using:
